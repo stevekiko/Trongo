@@ -7,22 +7,21 @@ const std::string g_strHelp = R"(
 Usage: ./profanity [OPTIONS]
 
   Help:
-    --help              Show help information
+    --help              显示帮助信息
 
   Modes with arguments:
-    --matching          Matching input, file or single address.
+    --matching          指定匹配规则，可以是单个地址字符串，也可以是规则文件 (如 profanity.txt)
 
   Matching configuration:
-    --prefix-count      Minimum number of prefix matches, default 0
-    --suffix-count      Minimum number of suffix matches, default 6
-    --quit-count        Exit the program when the generated number is greater than, default 0
+    --prefix-count      最少匹配的前缀位数, 默认 0
+    --suffix-count      最少匹配的后缀位数, 默认 6
+    --quit-count        匹配到指定数量的地址后退出程序, 默认 0 (不退出)
 
   Device control:
-    --skip              Skip device given by index
+    --skip              跳过指定索引的显卡设备 (Index)
 
   Output control:
-    --output            The file to output the results to
-    --post              The url to post the results to
+    --output            将结果保存到指定文件
 
 Examples:
 
@@ -31,7 +30,6 @@ Examples:
   ./profanity --matching profanity.txt --prefix-count 1 --suffix-count 8
   ./profanity --matching profanity.txt --prefix-count 1 --suffix-count 10 --quit-count 1
   ./profanity --matching profanity.txt --output result.txt
-  ./profanity --matching profanity.txt --post http://127.0.0.1:7002/api
   ./profanity --matching TUqEg3dzVEJNQSVW2HY98z5X8SBdhmao8D --prefix-count 2 --suffix-count 4 --quit-count 1
 
 About:
@@ -41,10 +39,10 @@ About:
   Please make sure the program you are running is download from: https://github.com/stevekiko/Trongo
   Author: telegram -> @enyccd
 
-Fbi Warning:
+安全警告 (Security Warning):
 
-  Before using a generated vanigity address, always verify that it matches the printed private key.
-  And always multi-sign the address to ensure account security.
+  在使用生成的靓号地址前，请务必进行私钥匹配验证。
+  为了资产安全，建议始终对生成的地址进行多重签名 (Multi-sign) 处理。
 )";
 
 #endif /* HPP_HELP */
