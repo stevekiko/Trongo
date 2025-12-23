@@ -14,6 +14,7 @@
 ---
 
 波场（TRON）靓号生成器，利用 `gpu` 进行加速。代码已净化，安全可靠 🔥
+此版本已完全汉化，并修复了 Windows 控制台的中文乱码问题。
 
 
 ## 🚀 快速开始 (如何使用)
@@ -34,6 +35,7 @@
       ```powershell
       .\profanity.exe --matching profanity.txt
       ```
+    *（提示：程序已内置 Windows 控制台乱码修复，无需手动设置 `chcp 65001`）*
 
 ### Mac 用户 (M-series / Intel)
 
