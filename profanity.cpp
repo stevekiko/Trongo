@@ -9,6 +9,10 @@
 #include <stdexcept>
 #include <vector>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenCL/cl.h>
 #include <OpenCL/cl_ext.h> // Included to get topology to get an actual unique identifier per device
@@ -135,12 +139,12 @@ unsigned int getUniqueDeviceIdentifier(const cl_device_id &deviceId) {
 }
 
 template <typename T> bool printResult(const T &t, const cl_int &err) {
-  std::cout << ((t == NULL) ? toString(err) : "Done") << std::endl;
+  std::cout << ((t == NULL) ? toString(err) : "完成") << std::endl;
   return t == NULL;
 }
 
 bool printResult(const cl_int err) {
-  std::cout << ((err != CL_SUCCESS) ? toString(err) : "Done") << std::endl;
+  std::cout << ((err != CL_SUCCESS) ? toString(err) : "完成") << std::endl;
   return err != CL_SUCCESS;
 }
 
@@ -151,6 +155,9 @@ std::string getDeviceCacheFilename(cl_device_id &d, const size_t &inverseSize) {
 
 int main(int argc, char **argv) {
   try {
+#ifdef _WIN32
+    SetConsoleOutputCP(65001);
+#endif
     ArgParser argp(argc, argv);
     bool bHelp = false;
 
@@ -184,7 +191,7 @@ int main(int argc, char **argv) {
     argp.addMultiSwitch('s', "skip", vDeviceSkipIndex);
 
     if (!argp.parse()) {
-      std::cout << "error: bad arguments, try again :<" << std::endl;
+      std::cout << "错误：参数错误，请重试 :<" << std::endl;
       return 1;
     }
 
@@ -194,7 +201,7 @@ int main(int argc, char **argv) {
     }
 
     if (matchingInput.empty()) {
-      std::cout << "error: matching file must be specified :<" << std::endl;
+      std::cout << "错误：必须指定匹配文件 :<" << std::endl;
       return 1;
     }
 
@@ -203,9 +210,7 @@ int main(int argc, char **argv) {
     }
 
     if (prefixCount > 10) {
-      std::cout
-          << "error: the number of prefix matches cannot be greater than 10 :<"
-          << std::endl;
+      std::cout << "错误：前缀匹配的数量不能大于 10 :<" << std::endl;
       return 1;
     }
 
@@ -214,17 +219,15 @@ int main(int argc, char **argv) {
     }
 
     if (suffixCount > 10) {
-      std::cout
-          << "error: the number of suffix matches cannot be greater than 10 :<"
-          << std::endl;
+      std::cout << "错误：后缀匹配的数量不能大于 10 :<" << std::endl;
       return 1;
     }
 
     Mode mode = Mode::matching(matchingInput);
 
     if (mode.matchingCount <= 0) {
-      std::cout << "error: please check your matching file to make sure the "
-                   "path and format are correct :<"
+      std::cout << "错误：请检查您的匹配文件以确保 "
+                   "路径和格式正确 :<"
                 << std::endl;
       return 1;
     }
@@ -241,7 +244,7 @@ int main(int argc, char **argv) {
     cl_int errorCode;
     bool bUsedCache = false;
 
-    std::cout << "Devices:" << std::endl;
+    std::cout << "设备：" << std::endl;
     for (size_t i = 0; i < vFoundDevices.size(); ++i) {
       if (std::find(vDeviceSkipIndex.begin(), vDeviceSkipIndex.end(), i) !=
           vDeviceSkipIndex.end()) {
@@ -269,9 +272,9 @@ int main(int argc, char **argv) {
       }
 
       std::cout << "  GPU-" << i << ": " << strName << ", " << globalMemSize
-                << " bytes available, " << computeUnits
-                << " compute units (precompiled = "
-                << (precompiled ? "yes" : "no") << ")" << std::endl;
+                << " 字节可用, " << computeUnits
+                << " 计算单元 (预编译 = " << (precompiled ? "是" : "否") << ")"
+                << std::endl;
       vDevices.push_back(vFoundDevices[i]);
       mDeviceIndex[vFoundDevices[i]] = i;
     }
@@ -282,7 +285,7 @@ int main(int argc, char **argv) {
 
     std::cout << std::endl;
     std::cout << "OpenCL:" << std::endl;
-    std::cout << "  Context creating ..." << std::flush;
+    std::cout << "  正在创建上下文 ..." << std::flush;
     auto clContext = clCreateContext(NULL, vDevices.size(), vDevices.data(),
                                      NULL, NULL, &errorCode);
     if (printResult(clContext, errorCode)) {
@@ -294,7 +297,7 @@ int main(int argc, char **argv) {
       // Create program from binaries
       bUsedCache = true;
 
-      std::cout << "  Binary kernel loading..." << std::flush;
+      std::cout << "  正在加载二进制内核..." << std::flush;
       const unsigned char **pKernels =
           new const unsigned char *[vDevices.size()];
       for (size_t i = 0; i < vDeviceBinary.size(); ++i) {
@@ -312,7 +315,7 @@ int main(int argc, char **argv) {
       }
     } else {
       // Create a program from the kernel source
-      std::cout << "  Kernel compiling ..." << std::flush;
+      std::cout << "  正在编译内核 ..." << std::flush;
 
       // const std::string strKeccak = readFile("keccak.cl");
       // const std::string strSha256 = readFile("sha256.cl");
@@ -331,7 +334,7 @@ int main(int argc, char **argv) {
     }
 
     // Build the program
-    std::cout << "  Program building ..." << std::flush;
+    std::cout << "  正在构建程序 ..." << std::flush;
     const std::string strBuildOptions =
         "-D PROFANITY_INVERSE_SIZE=" + toString(inverseSize) +
         " -D PROFANITY_MAX_SCORE=" + toString(PROFANITY_MAX_SCORE);
@@ -342,14 +345,14 @@ int main(int argc, char **argv) {
 
     // Save binary to improve future start times
     if (!bUsedCache && !bNoCache) {
-      std::cout << "  Program saving ..." << std::flush;
+      std::cout << "  正在保存程序 ..." << std::flush;
       auto binaries = getBinaries(clProgram);
       for (size_t i = 0; i < binaries.size(); ++i) {
         std::ofstream fileOut(getDeviceCacheFilename(vDevices[i], inverseSize),
                               std::ios::binary);
         fileOut.write(binaries[i].data(), binaries[i].size());
       }
-      std::cout << "Done" << std::endl;
+      std::cout << "完成" << std::endl;
     }
 
     std::cout << std::endl;
@@ -366,9 +369,9 @@ int main(int argc, char **argv) {
     clReleaseContext(clContext);
     return 0;
   } catch (std::runtime_error &e) {
-    std::cout << "std::runtime_error - " << e.what() << std::endl;
+    std::cout << "运行时错误 - " << e.what() << std::endl;
   } catch (...) {
-    std::cout << "unknown exception occured" << std::endl;
+    std::cout << "发生未知异常" << std::endl;
   }
 
   return 1;

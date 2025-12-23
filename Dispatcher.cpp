@@ -211,22 +211,22 @@ void Dispatcher::run() {
       std::chrono::duration_cast<std::chrono::seconds>(
           std::chrono::steady_clock::now() - timeStart)
           .count();
-  std::cout << "  Initialization time: " << timeInitialization << " seconds"
+  std::cout << "  初始化时间: " << timeInitialization << " 秒"
             << std::endl;
 
   m_quit = false;
   m_countRunning = m_vDevices.size();
 
   std::cout << std::endl;
-  std::cout << "Running..." << std::endl;
-  std::cout << "  Before using a generated vanigity address, always verify "
-               "that it matches the printed private key."
+  std::cout << "运行中..." << std::endl;
+  std::cout << "  在使用生成的特定地址之前，请务必验证 "
+               "它是否与打印的私钥匹配。"
             << std::endl;
-  std::cout << "  Please make sure the program you are running is download "
-               "from: https://github.com/stevekiko/Trongo"
+  std::cout << "  请确保您运行的程序下载 "
+               "自：https://github.com/stevekiko/Trongo"
             << std::endl;
   std::cout
-      << "  And always multi-sign the address to ensure account security. "
+      << "  并始终对地址进行多重签名以确保账户安全。 "
       << std::endl;
   std::cout << std::endl;
 
@@ -240,8 +240,8 @@ void Dispatcher::run() {
 }
 
 void Dispatcher::init() {
-  std::cout << "Initializing:" << std::endl;
-  std::cout << "  Should be no longer than 1 minute..." << std::endl;
+  std::cout << "初始化中：" << std::endl;
+  std::cout << "  应该不超过 1 分钟..." << std::endl;
 
   const auto deviceCount = m_vDevices.size();
   m_sizeInitTotal = m_size * deviceCount;
@@ -350,7 +350,7 @@ void Dispatcher::initContinue(Device &d) {
     // Printing one whole string at once helps in avoiding garbled output when
     // executed in parallell
     const std::string strOutput =
-        "  GPU-" + toString(d.m_index) + " initialized ...Done";
+        "  GPU-" + toString(d.m_index) + " 初始化 ...完成";
     std::cout << strOutput << std::endl;
     clSetUserEventStatus(d.m_eventFinished, CL_COMPLETE);
   }
@@ -481,8 +481,8 @@ printResult(cl_ulong4 seed, cl_ulong round, result r, cl_uchar score,
 
   // Print
   const std::string strVT100ClearLine = "\33[2K\r";
-  std::cout << strVT100ClearLine << "  Time: " << std::setw(5) << seconds
-            << "s Private: " << strPrivate << " Address:" << strPublicTron
+  std::cout << strVT100ClearLine << "  耗时: " << std::setw(5) << seconds
+            << "秒 私钥: " << strPrivate << " 地址:" << strPublicTron
             << std::endl;
 
   if (!outputFile.empty()) {
@@ -560,7 +560,7 @@ void Dispatcher::printSpeed() {
     }
 
     const std::string strVT100ClearLine = "\33[2K\r";
-    std::cerr << strVT100ClearLine << "Total: " << formatSpeed(speedTotal)
+    std::cerr << strVT100ClearLine << "总计: " << formatSpeed(speedTotal)
               << " -" << strGPUs << '\r' << std::flush;
     m_countPrint = 0;
   }
