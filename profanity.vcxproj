@@ -69,7 +69,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Curl\lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -108,24 +108,24 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Curl\include;$(SolutionDir)OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PreprocessorDefinitions>;BUILDING_LIBCURL;HTTP_ONLY</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SOlutionDir)Curl\lib;$(SolutionDir)OpenCL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;libcurl_a.lib;ws2_32.lib;winmm.lib;wldap32.lib;crypt32.lib;normaliz.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenCL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Curl\include;$(SolutionDir)OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PreprocessorDefinitions>;BUILDING_LIBCURL;HTTP_ONLY</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Curl\lib;$(SolutionDir)OpenCL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;libcurl_a.lib;ws2_32.lib;winmm.lib;wldap32.lib;crypt32.lib;normaliz.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenCL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -138,18 +138,7 @@
   <ItemGroup>
     <ClInclude Include="ArgParser.hpp" />
     <ClInclude Include="CLMemory.hpp" />
-    <ClInclude Include="Curl\include\curl\curl.h" />
-    <ClInclude Include="Curl\include\curl\curlver.h" />
-    <ClInclude Include="Curl\include\curl\easy.h" />
-    <ClInclude Include="Curl\include\curl\header.h" />
-    <ClInclude Include="Curl\include\curl\mprintf.h" />
-    <ClInclude Include="Curl\include\curl\multi.h" />
-    <ClInclude Include="Curl\include\curl\options.h" />
-    <ClInclude Include="Curl\include\curl\stdcheaders.h" />
-    <ClInclude Include="Curl\include\curl\system.h" />
-    <ClInclude Include="Curl\include\curl\typecheck-gcc.h" />
-    <ClInclude Include="Curl\include\curl\urlapi.h" />
-    <ClInclude Include="Curl\include\curl\websockets.h" />
+
     <ClInclude Include="Dispatcher.hpp" />
     <ClInclude Include="help.hpp" />
     <ClInclude Include="kernel_keccak.hpp" />
